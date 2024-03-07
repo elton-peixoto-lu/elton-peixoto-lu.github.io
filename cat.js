@@ -1,68 +1,56 @@
-$(document).ready(function() {
-    // Obter o dia da semana
-    var diaDaSemana = new Date().getDay();
-    var nomeDia;
-    switch (diaDaSemana) {
+const getDay = () => new Date().getDay();
+
+const getDayName = (day) => {
+    switch (day) {
         case 0:
-            nomeDia = "Domingo";
-            break;
+            return "Domingo";
         case 1:
-            nomeDia = "Segunda-feira";
-            break;
+            return "Segunda-feira";
         case 2:
-            nomeDia = "Terça-feira";
-            break;
+            return "Terça-feira";
         case 3:
-            nomeDia = "Quarta-feira";
-            break;
+            return "Quarta-feira";
         case 4:
-            nomeDia = "Quinta-feira";
-            break;
+            return "Quinta-feira";
         case 5:
-            nomeDia = "Sexta-feira";
-            break;
+            return "Sexta-feira";
         case 6:
-            nomeDia = "Sábado";
-            break;
+            return "Sábado";
     }
+};
 
-    // Atualizar o conteúdo da página
-    $("#dia-da-semana").text(nomeDia);
+const getCatImageUrl = (day) => `https://api.thecatapi.com/v1/images/search?category=${day}`;
 
-    // Buscar imagem de gato de acordo com o dia da semana
-    var urlImagem = "https://api.thecatapi.com/v1/images/search?category=" + diaDaSemana;
-    $.ajax({
-        url: urlImagem,
-        success: function(data) {
-            var imagemGato = data[0].url;
-            $("#imagem-gato").attr("src", imagemGato);
-        }
-    });
+const fetchCatImage = (url) => fetch(url).then((response) => response.json());
 
-    // Adicionar legenda
-    var legenda;
-    switch (diaDaSemana) {
+const updatePageContent = (day, image) => {
+    $("#dia-da-semana").text(getDayName(day));
+    $("#imagem-gato").attr("src", image?.url ?? "https://placekitten.com/300/300"); // Operador Elvis para imagem
+    $("#legenda").text(getCaption(day));
+};
+
+const getCaption = (day) => {
+    switch (day) {
         case 0:
-            legenda = "Um domingo relaxante com meu amigo peludo.";
-            break;
+            return "Um domingo relaxante com meu amigo peludo.";
         case 1:
-            legenda = "Segunda-feira? Só com um café e um gato no colo.";
-            break;
+            return "Segunda-feira? Só com um café e um gato no colo.";
         case 2:
-            legenda = "Terça-feira, energia renovada com a fofura felina.";
-            break;
+            return "Terça-feira, energia renovada com a fofura felina.";
         case 3:
-            legenda = "Quarta-feira, quase lá! Hora de um cochilo com meu gatinho.";
-            break;
+            return "Quarta-feira, quase lá! Hora de um cochilo com meu gatinho.";
         case 4:
-            legenda = "Quinta-feira, ansioso pela sexta-feira como este gato.";
-            break;
-        case 5:
-            legenda = "Sexta-feira! Hora de celebrar com meu companheiro felino.";
-            break;
+            return "Quinta-feira, ansioso pela sexta-feira como este gato.";
         case 6:
-            legenda = "Sábado, dia de relaxar e curtir a companhia do meu gato.";
-            break;
+            return "Sexta-feira! Hora de celebrar com meu companheiro felino.";
+        case 6:
+            return "Sábado, dia de relaxar e curtir a companhia do meu gato.";
     }
-    $("#legenda").text(legenda);
+};
+
+$(document).ready(() => {
+    const day = getDay();
+    const catImageUrl = getCatImageUrl(day);
+
+    fetchCatImage(catImageUrl).then((image) => updatePageContent(day, image));
 });
