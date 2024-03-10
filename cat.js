@@ -15,9 +15,20 @@ const getDayName = (day) => {
 };
 
 // Módulo de imagem do gato
-const getCatImageUrl = (day) => `https://api.thecatapi.com/v1/images/search?category_ids=${day}`;
-
-const fetchCatImage = (url) => fetch(url).then((response) => response.json());
+const getCatImageUrl = () => {
+    const url = 'https://api.thedogapi.com/v1/images/search?size=small&mime_types=jpg,png&format=json';
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar a imagem. Status do HTTP: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Resposta da API:', data); // Adicionado log para verificar a resposta da API
+            return data[0].url;
+        });
+};
 
 // Módulo de legenda
 const getCaption = (day) => {
@@ -34,18 +45,19 @@ const getCaption = (day) => {
 };
 
 // Módulo de atualização da página
-const updatePageContent = (day, image) => {
+const updatePageContent = (day, imageUrl) => {
     $("#dia-da-semana").text(getDayName(day));
-    $("#imagem-gato").attr("src", image[0].url); // Alterado para image[0].url para acessar o URL da imagem corretamente
+    $("#imagem-gato").attr("src", imageUrl);
     $("#legenda").text(getCaption(day));
 };
 
 // Módulo principal
 $(document).ready(() => {
     const day = getDay();
-    const catImageUrl = getCatImageUrl(day);
 
-    fetchCatImage(catImageUrl)
-        .then((image) => updatePageContent(day, image))
+    getCatImageUrl()
+        .then((imageUrl) => {
+            updatePageContent(day, imageUrl);
+        })
         .catch((error) => console.error('Erro ao carregar a imagem:', error)); // Adicionado tratamento de erro
 });
