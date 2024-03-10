@@ -16,18 +16,7 @@ const getDayName = (day) => {
 
 // Módulo de imagem do gato
 const getCatImageUrl = () => {
-    const url = 'https://api.thedogapi.com/v1/images/search?size=small&mime_types=jpg,png&format=json';
-    return fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao carregar a imagem. Status do HTTP: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Resposta da API:', data); // Adicionado log para verificar a resposta da API
-            return data[0].url;
-        });
+    return Promise.resolve('https://cataas.com/cat/cute');
 };
 
 // Módulo de legenda
