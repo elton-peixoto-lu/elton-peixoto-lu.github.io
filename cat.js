@@ -28,7 +28,7 @@ const getCaption = (day) => {
         "Quarta-feira, quase lá! Hora de um cochilo com meu gatinho.",
         "Quinta-feira, ansioso pela sexta-feira como este gato.",
         "Sexta-feira! Hora de celebrar com meu companheiro felino.",
-        "Sábado, dia de relaxar e curtir a companhia do meu gato."
+        "Sábado, dia de relaxar e curtir a companhia do meu gato ."
     ];
     return captions[day];
 };
