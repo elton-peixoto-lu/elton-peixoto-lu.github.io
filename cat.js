@@ -16,7 +16,7 @@ const getDayName = (day) => {
 
 // Módulo de imagem do gato
 const getCatImageUrl = () => {
-    return Promise.resolve('https://cataas.com/cat/cute');
+    return Promise.resolve('https://source.unsplash.com/featured/?cat');
 };
 
 // Módulo de legenda
