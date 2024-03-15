@@ -16,7 +16,21 @@ const getDayName = (day) => {
 
 // Módulo de imagem do gato
 const getCatImageUrl = () => {
-    return Promise.resolve('https://source.unsplash.com/featured/?cat');
+    return new Promise((resolve, reject) => {
+        fetch('https://source.unsplash.com/featured/?cat')
+            .then(response => {
+                if (response.status !== 200) {
+                    console.error('Erro ao obter a imagem do gato. Status:', response.status);
+                    reject('Erro ao obter a imagem do gato');
+                } else {
+                    resolve(response.url);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao obter a imagem do gato:', error);
+                reject('Erro ao obter a imagem do gato');
+            });
+    });
 };
 
 // Módulo de legenda
